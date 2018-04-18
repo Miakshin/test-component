@@ -12,5 +12,6 @@ To start the application:
 Run `npm start` for a dev server.Application will launched in new browser tab at `http://localhost:3000/`.
 
 For check application with Storybook run:      
-    npm run storybook
+    npm run storybook      
+    
 When the application download is complete it is available at  http://localhost:9009/
