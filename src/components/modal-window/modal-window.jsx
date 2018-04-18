@@ -4,13 +4,10 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import { grey200 , grey900 , red100, red600} from 'material-ui/styles/colors';
+import { grey200 , grey900 } from 'material-ui/styles/colors';
 import mockData from '../../mock-data/mock-data';
-import selectVariables from '../../mock-data/select-variables'
+import Line from './modal-window-line';
 
 class ModalWindow extends Component {
   constructor(props) {
@@ -19,15 +16,7 @@ class ModalWindow extends Component {
         open: true,
         data: mockData
       };
-
-    this.onChangeType = this.onChangeType.bind(this);
-    this.onChangeValue = this.onChangeValue.bind(this);
   }
-
-  state = {
-    open: true,
-    data: mockData
-  };
 
   handleOpen = () => {
     this.setState({open: true});
@@ -48,12 +37,25 @@ class ModalWindow extends Component {
     this.setState({data: newStateData})
   }
 
-  onChangeType = (ev) => {
-    console.dir(ev.target)
+  onChangeType = (id,type) => {
+    const newDataState = this.state.data.map( item => {
+      return item.id === +id ?
+        { id: item.id , type: type, value: item.value } :
+        item
+    })
+
+    this.setState({data: newDataState})
   }
 
   onChangeValue = (ev) => {
-    console.log(ev.target.value)
+    const id = ev.target.name.split("-")[1]
+    const newDataState = this.state.data.map( item => {
+      return item.id === +id ?
+        { id: item.id , type: item.type, value: ev.target.value } :
+        item
+    })
+
+    this.setState({data: newDataState})
   }
 
   onSaveItems = () => {
@@ -73,34 +75,13 @@ class ModalWindow extends Component {
 
   render() {
 
-    const selectItems = selectVariables.map((sVar , i ) => {
+    const numberStructuresList = this.state.data.map((item) =>{
       return(
-        <MenuItem value={ sVar } key={i} primaryText ={ sVar } />
-      )
-    })
-
-    const numberStructuresList = this.state.data.map( item => {
-      return(
-        <div key={item.id}>
-          <SelectField
-            value={item.type}
-            maxHeight={200}
-            style={{ margin : "0px 15px", top: "26px", width: "40%"}}
-            onChange={this.onChangeType}>
-            {selectItems}
-          </SelectField>
-          <TextField type="number"
-            style={{ width: "10%", margin : "0px 15px"}}
-            name={`text${item.id}`}
-            value={item.value}
-            onChange={this.onChangeValue}/>
-          <IconButton
-            style={{ background : red100 , borderRadius : "50%", padding : "0px"}}
-            iconStyle={{width:  "40px", height:  "40px"}}>
-            <NavigationClose color={red600}
-            onClick={()=>this.onDeleteLine(item.id)}/>
-          </IconButton>
-        </div>
+        <Line item = {item}
+          onChangeType = {this.onChangeType.bind(this)}
+          onChangeValue = {this.onChangeValue}
+          onDeleteLine = {this.onDeleteLine.bind(this)}
+          key={item.id}/>
       )
     })
 
