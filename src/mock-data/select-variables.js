@@ -1,7 +1,7 @@
 const selectVariables = [
-  "Twin",
-  "Tripple",
-  "Quadro"
-]
+  'Twin',
+  'Tripple',
+  'Quadro',
+];
 
-export default selectVariables
+export default selectVariables;

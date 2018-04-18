@@ -6,8 +6,11 @@ import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import { grey200 , grey900 } from 'material-ui/styles/colors';
+import { grey900 } from 'material-ui/styles/colors';
 import Line from './modal-window-line';
+import Footer from './modal-window-footer'
+
+import styles from './styles.js'
 
 class ModalWindow extends Component {
   constructor(props) {
@@ -76,35 +79,6 @@ class ModalWindow extends Component {
 
   render() {
 
-    const styles = {
-      bg:{
-        display: "flex",
-        alignItems : "center",
-        justifyContent : "center",
-        height: "100vh"
-      },
-      window:{
-         padding: "30px 60px 60px 30px"
-      },
-      addBtn:{
-        margin: "0px 0px 20px 0px",
-      },
-      header:{
-        background :  grey200 ,
-        height: "75px"
-      },
-      footer:{
-        margin: "15px"
-      },
-      emptyData:{
-        color: grey900,
-        margin: "15px"
-      },
-      overlay:{
-        background: grey200
-      }
-    }
-
     const numberStructuresList = (()=>{
       return  (this.state.data && this.state.data.length > 0) ?
         this.state.data.map((item) =>{
@@ -147,14 +121,9 @@ class ModalWindow extends Component {
             hoverColor="#ffffff"
             rippleColor="#ffffff"
             onClick={this.onAddLine}/>
-          <footer style={styles.footer}>
-            <RaisedButton
-              label="Сохранить"
-              primary={true}
-              onClick={this.onSaveItems}/>
-            <FlatButton label="Отмена" default={true}
-              onClick={this.handleClose}/>
-          </footer>
+          <Footer
+            onSaveItems = {this.onSaveItems}
+            handleClose = {this.handleClose}/>
         </Dialog>
       </div>
     );
