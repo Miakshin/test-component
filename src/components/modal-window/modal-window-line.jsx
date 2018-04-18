@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
@@ -19,6 +20,27 @@ const Line = (props) => {
     )
   })
 
+  const styles = {
+    select : {
+      margin : "0px 15px",
+      top: "26px",
+      width: "40%"
+    },
+    numberField:{
+      width: "10%",
+      margin : "0px 15px"
+    },
+    buttonOuter: {
+      background : red100 ,
+      borderRadius : "50%",
+      padding : "0px"
+    },
+    buttonIner: {
+      width:  "40px",
+      height:  "40px"
+    }
+  }
+
   return (
     <div key={props.item.id}>
       <SelectField
@@ -26,23 +48,30 @@ const Line = (props) => {
         maxHeight={200}
         hintText="Select a type"
         name={`select-${props.item.id}`}
-        style={{ margin : "0px 15px", top: "26px", width: "40%"}}
+        style={styles.select}
         onChange={changeType}>
         {selectItems}
       </SelectField>
       <TextField type="number"
-        style={{ width: "10%", margin : "0px 15px"}}
+        style={styles.numberField}
         name={`text-${props.item.id}`}
         value={props.item.value}
         onChange={props.onChangeValue}/>
       <IconButton
-        style={{ background : red100 , borderRadius : "50%", padding : "0px"}}
-        iconStyle={{width:  "40px", height:  "40px"}}>
+        style={ styles.buttonOuter }
+        iconStyle={ styles.buttonIner }>
         <NavigationClose color={red600}
         onClick={()=>props.onDeleteLine(props.item.id)}/>
       </IconButton>
     </div>
   )
+}
+
+Line.propTypes = {
+  item:PropTypes.object.isRequired,
+  onChangeType:PropTypes.func.isRequired,
+  onChangeValue:PropTypes.func.isRequired,
+  onDeleteLine:PropTypes.func.isRequired,
 }
 
 export default Line

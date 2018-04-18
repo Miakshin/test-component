@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -6,15 +7,14 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import { grey200 , grey900 } from 'material-ui/styles/colors';
-import mockData from '../../mock-data/mock-data';
 import Line from './modal-window-line';
 
 class ModalWindow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        open: true,
-        data: mockData
+        open: props.open || false,
+        data: props.data || []
       };
   }
 
@@ -61,8 +61,9 @@ class ModalWindow extends Component {
   onSaveItems = () => {
     this.setState({
       open: false,
-      data: mockData
+      data: []
     })
+    console.log("value saved")
   }
 
   onDeleteLine = (id) => {
@@ -75,24 +76,63 @@ class ModalWindow extends Component {
 
   render() {
 
-    const numberStructuresList = this.state.data.map((item) =>{
-      return(
-        <Line item = {item}
-          onChangeType = {this.onChangeType.bind(this)}
-          onChangeValue = {this.onChangeValue}
-          onDeleteLine = {this.onDeleteLine.bind(this)}
-          key={item.id}/>
-      )
-    })
+    const styles = {
+      bg:{
+        display: "flex",
+        alignItems : "center",
+        justifyContent : "center",
+        height: "100vh"
+      },
+      window:{
+         padding: "30px 60px 60px 30px"
+      },
+      addBtn:{
+        margin: "0px 0px 20px 0px",
+      },
+      header:{
+        background :  grey200 ,
+        height: "75px"
+      },
+      footer:{
+        margin: "15px"
+      },
+      emptyData:{
+        color: grey900,
+        margin: "15px"
+      },
+      overlay:{
+        background: grey200
+      }
+    }
+
+    const numberStructuresList = (()=>{
+      return  (this.state.data && this.state.data.length > 0) ?
+        this.state.data.map((item) =>{
+        return(
+          <Line item = {item}
+            onChangeType = {this.onChangeType.bind(this)}
+            onChangeValue = {this.onChangeValue}
+            onDeleteLine = {this.onDeleteLine.bind(this)}
+            key={item.id}/>
+        )
+      })
+      :
+      <h2 style={styles.emptyData}>Добавьте строку</h2>
+  })()
 
     return (
-      <div style={{display: "flex", alignItems : "center", justifyContent : "center", height: "100vh"}}>
-        <RaisedButton label="Open modal window" onClick={this.handleOpen} />
+      <div style={styles.bg}>
+        <RaisedButton
+          label="Open modal window"
+          onClick={this.handleOpen} />
         <Dialog
           open = { this.state.open }
-          autoScrollBodyContent = {true} >
+          autoScrollBodyContent = {true}
+          bodyStyle={styles.window}
+          overlayStyle={styles.overlay}
+          >
           <AppBar
-            style={{ background :  grey200 }}
+            style={styles.header}
             title={<span style={{color : grey900}}>Структура номеров</span>}
             iconElementRight={
               <IconButton>
@@ -103,11 +143,11 @@ class ModalWindow extends Component {
           {numberStructuresList}
           <br/><FlatButton label="Добавить"
             primary={true}
-            style={{margin: "15px 0px"}}
+            style={styles.addBtn}
             hoverColor="#ffffff"
             rippleColor="#ffffff"
             onClick={this.onAddLine}/>
-          <footer style={{margin: "15px"}}>
+          <footer style={styles.footer}>
             <RaisedButton
               label="Сохранить"
               primary={true}
@@ -119,6 +159,11 @@ class ModalWindow extends Component {
       </div>
     );
   }
+}
+
+ModalWindow.propTypes = {
+  open:PropTypes.bool,
+  data:PropTypes.array
 }
 
 export default ModalWindow;
