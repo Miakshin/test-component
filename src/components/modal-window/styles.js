@@ -14,10 +14,13 @@ const styles = {
     background: red100,
     borderRadius: '50%',
     padding: '0px',
+    
   },
   buttonIner: {
-    width: '40px',
-    height: '40px',
+    maxWidth: '40px',
+    maxHeight: '40px',
+    minWidth: '20px',
+    minHeight: '20px',
   },
   bg: {
     display: 'flex',

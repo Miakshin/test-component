@@ -84,9 +84,9 @@ class ModalWindow extends Component {
         this.state.data.map((item) =>{
         return(
           <Line item = {item}
-            onChangeType = {this.onChangeType.bind(this)}
+            onChangeType = {this.onChangeType}
             onChangeValue = {this.onChangeValue}
-            onDeleteLine = {this.onDeleteLine.bind(this)}
+            onDeleteLine = {this.onDeleteLine}
             key={item.id}/>
         )
       })
@@ -103,8 +103,7 @@ class ModalWindow extends Component {
           open = { this.state.open }
           autoScrollBodyContent = {true}
           bodyStyle={styles.window}
-          overlayStyle={styles.overlay}
-          >
+          overlayStyle={styles.overlay}>
           <AppBar
             style={styles.header}
             title={<span style={{color : grey900}}>Структура номеров</span>}
